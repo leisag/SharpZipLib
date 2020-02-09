@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - if: env.binframework == 'netcoreapp2'
+    - if: matrix.binframework == 'netcoreapp2'
       name: Setup up .NET Core
       uses: actions/setup-dotnet@v1
       with:

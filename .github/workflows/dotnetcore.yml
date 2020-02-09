@@ -13,7 +13,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: Build with dotnet
-      run: dotnet build -c Release -f netstandard2
+    - name: Build Release
+      run: |
+        dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+        dotnet build -c Release -f netstandard2 test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+    - name: Build Debug
+      run: dotnet build -c Debug -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     - name: Test with dotnet
-      run: dotnet test -c Release -f netstandard2
+      run: dotnet test -c Release -f netcoreapp2

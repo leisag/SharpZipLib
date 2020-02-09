@@ -17,6 +17,8 @@ jobs:
     env:
       test-runner: test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj
       test-report: docs\nunit3-test-results-debug.xml
+      framework: ${{ matrix.framework }}
+      configuration: ${{ matrix.configuration }}
     steps:
     - uses: actions/checkout@v2
       
@@ -27,13 +29,13 @@ jobs:
         dotnet-version: 2.2.108
       
     - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c ${{ configuration }} -f ${{ framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Build tests
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ framework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+      run: dotnet build -c ${{ configuration }} -f ${{ framework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
 
     - name: Run tests
-      run: dotnet run -c ${{ matrix.configuration }} -f ${{ framework }} -p ${{ test-runner }} --result=${{ test-report }}
+      run: dotnet run -c ${{ configuration }} -f ${{ framework }} -p ${{ test-runner }} --result=${{ test-report }}
 
     - name: Upload nuget package artifact
       if: 'false'

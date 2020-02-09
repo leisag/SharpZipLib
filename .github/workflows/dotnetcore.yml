@@ -11,31 +11,34 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         include:
           - os: windows-latest
-            framework: net45
+            libframework: net45
+            binframework: net45
           - os: ubuntu-latest
-            framework: netcoreapp2
+            libframework: netstandard2
+            binframework: netcoreapp2
     env:
       test-runner: test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj
       test-report: docs\nunit3-test-results-debug.xml
-      framework: ${{ matrix.framework }}
+      binframework: ${{ matrix.binframework }}
+      libframework: ${{ matrix.libframework }}
       configuration: ${{ matrix.configuration }}
     steps:
     - uses: actions/checkout@v2
       
-    - if: env.framework == 'netcoreapp2'
+    - if: env.binframework == 'netcoreapp2'
       name: Setup up .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
       
     - name: Build library
-      run: dotnet build -c $configuration -f $framework src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c $configuration -f $libframework src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Build tests
-      run: dotnet build -c $configuration -f $framework test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+      run: dotnet build -c $configuration -f $binframework test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
 
     - name: Run tests
-      run: dotnet run -c $configuration -f $framework -p $test-runner --result=$test-report
+      run: dotnet run -c $configuration -f $binframework -p $test-runner --result=$test-report
 
     - name: Upload nuget package artifact
       if: 'false'

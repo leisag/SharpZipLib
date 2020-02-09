@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   BuildAndTest:
-    runs-on: ${{ matrix.configuration }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         configuration: ['Debug', 'Release']

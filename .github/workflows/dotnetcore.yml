@@ -17,8 +17,8 @@ jobs:
             libframework: netstandard2
             binframework: netcoreapp2
     env:
-      test-runner: test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj
-      test-report: docs\nunit3-test-results-debug.xml
+      test-runner: test/ICSharpCode.SharpZipLib.TestBootstrapper/ICSharpCode.SharpZipLib.TestBootstrapper.csproj
+      test-report: docs/nunit3-test-results-debug.xml
     steps:
     - uses: actions/checkout@v2
       

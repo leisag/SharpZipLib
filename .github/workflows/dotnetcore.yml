@@ -22,20 +22,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - if: framework == 'netcoreapp2'
+    - if: env.framework == 'netcoreapp2'
       name: Setup up .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
       
     - name: Build library
-      run: dotnet build -c ${{ configuration }} -f ${{ framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c $configuration -f $framework src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Build tests
-      run: dotnet build -c ${{ configuration }} -f ${{ framework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+      run: dotnet build -c $configuration -f $framework test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
 
     - name: Run tests
-      run: dotnet run -c ${{ configuration }} -f ${{ framework }} -p ${{ test-runner }} --result=${{ test-report }}
+      run: dotnet run -c $configuration -f $framework -p $test-runner --result=$test-report
 
     - name: Upload nuget package artifact
       if: 'false'
@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Test report
-        path: ${{ test-report }}
+        path: $test-report

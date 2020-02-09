@@ -9,24 +9,22 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest]
+        include:
+          - os: windows-latest
+            framework: net45
+          - os: ubuntu-latest
+            framework: netcoreapp2
     env:
       test-runner: test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj
       test-report: docs\nunit3-test-results-debug.xml
     steps:
     - uses: actions/checkout@v2
       
-    - if: matrix.os == 'ubuntu-latest'
-      name: Setup linux environment
+    - if: framework == 'netcoreapp2'
+      name: Setup up .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-      env:  
-        framework: netcoreapp2
-
-    - if: matrix.os == 'windows-latest'
-      name: Setup windows environment
-      env:
-        framework: net45
       
     - name: Build library
       run: dotnet build -c ${{ matrix.configuration }} -f ${{ framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj

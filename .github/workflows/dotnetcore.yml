@@ -3,7 +3,7 @@ name: On Push
 on: [push]
 
 jobs:
-  "Build and Test":
+  BuildAndTest:
     runs-on: ${{ matrix.configuration }}
     strategy:
       matrix:

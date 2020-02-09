@@ -1,4 +1,4 @@
-name: Build with .NET Core
+name: On Push
 
 on: [push]
 
@@ -20,11 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+      env:  
         framework: netcoreapp2
 
     - if: matrix.os == 'windows-latest'
       name: Setup windows environment
-      with:
+      env:
         framework: net45
       
     - name: Build library

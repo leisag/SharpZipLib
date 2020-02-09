@@ -29,10 +29,10 @@ jobs:
         dotnet-version: 2.2.108
       
     - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }}-f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Build tests
-      run: dotnet build -c ${{ matrix.configuration }}-f ${{ matrix.binframework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.binframework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
 
     - name: Run tests
       run: dotnet run -c ${{ matrix.configuration }} -f ${{ matrix.binframework }} -p ${{ env.test-runner }} --result=${{ env.test-report }}

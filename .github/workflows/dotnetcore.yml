@@ -12,7 +12,7 @@ jobs:
         include:
           - os: windows-latest
             libframework: net45
-            binframework: net45
+            binframework: netcoreapp2
           - os: ubuntu-latest
             libframework: netstandard2
             binframework: netcoreapp2

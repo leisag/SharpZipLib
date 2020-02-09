@@ -1,4 +1,4 @@
-name: .NET Core
+name: Build with .NET Core
 
 on: [push]
 
@@ -14,4 +14,6 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build -c Release -f netstandard2
+    - name: Test with dotnet
+      run: dotnet test -c Release -f netstandard2

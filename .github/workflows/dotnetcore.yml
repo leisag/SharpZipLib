@@ -16,7 +16,7 @@ jobs:
     - name: Build Release
       run: |
         dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-        dotnet build -c Release -f netstandard2 test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+        dotnet build -c Release -f netcoreapp2 test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
     - name: Build Debug
       run: dotnet build -c Debug -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     - name: Test with dotnet

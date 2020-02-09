@@ -3,21 +3,48 @@ name: Build with .NET Core
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  "Build and Test":
+    runs-on: ${{ matrix.configuration }}
+    strategy:
+      matrix:
+        configuration: ['Debug', 'Release']
+        os: [ubuntu-latest, windows-latest]
+    env:
+      test-runner: test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj
+      test-report: docs\nunit3-test-results-debug.xml
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+      
+    - if: matrix.os == 'ubuntu-latest'
+      name: Setup linux environment
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: Build Release
-      run: |
-        dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-        dotnet build -c Release -f netcoreapp2 test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
-    - name: Build Debug
-      run: dotnet build -c Debug -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-    - name: Test with dotnet
-      run: dotnet test -c Release -f netcoreapp2
+        framework: netcoreapp2
+
+    - if: matrix.os == 'windows-latest'
+      name: Setup windows environment
+      with:
+        framework: net45
+      
+    - name: Build library
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Build tests
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ framework }} test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+
+    - name: Run tests
+      run: dotnet run -c ${{ matrix.configuration }} -f ${{ framework }} -p ${{ test-runner }} --result=${{ test-report }}
+
+    - name: Upload nuget package artifact
+      if: 'false'
+      uses: actions/upload-artifact@v1
+      with:
+        name: Nuget package
+        path: src/ICSharpCode.SharpZipLib/SharpZipLib.nupkg
+
+    - name: Upload test report artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: Test report
+        path: ${{ test-report }}
